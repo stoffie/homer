@@ -9,7 +9,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        HomerLexer lexer = new HomerLexer(new ANTLRInputStream("var t = true; t = 10; t = 666;"));
+        String fragment = "var x = 0; var f = { x = 1; };";
+
+        HomerLexer lexer = new HomerLexer(new ANTLRInputStream(fragment));
         HomerParser parser = new HomerParser(new CommonTokenStream(lexer));
 
         StackFrame frame = new StackFrame();

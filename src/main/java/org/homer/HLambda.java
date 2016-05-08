@@ -1,23 +1,23 @@
 
 package org.homer;
 
+import org.homer.ast.Form;
+import org.homer.ast.StmntSeq;
+
 public class HLambda extends HNative {
     StackFrame frame;
-    Ast body;
+    Form form;
+    StmntSeq seq;
 
-    public HLambda(Ast body) {
-        this.body = body;
+    public HLambda(StackFrame frame, Form form, StmntSeq seq) {
+        this.frame = frame;
+        this.form = form;
+        this.seq = seq;
     }
 
     public HNative call() {
-        return this.body.eval(new StackFrame(this.frame));
-    }
-
-    public HNative eval(StackFrame frame) {
-        if (this.frame == null) {
-            this.frame = frame;
-        }
-        return this;
+        throw new UnsupportedOperationException("not implemented");
+        //return this.body.eval(new StackFrame(this.frame));
     }
 
     public String type() {

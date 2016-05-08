@@ -34,14 +34,19 @@ decl returns [Decl val]
     : VAR ID '=' expr { $val = new Decl($ID.text, $expr.val); }
     ;
 
-form
-    : ID
-    | ID ',' form
+params returns [Params val]
+    : expr { $val = new Params($expr.val); }
+    | expr ',' p=params { $val = new Params($expr.val, $p.val); }
     ;
 
-hfunction
-    : '{' '|' form '|' stmnt_seq '}'
-    | '{' stmnt_seq '}'
+form returns [Form val]
+    : ID { $val = new Form($ID.text); }
+    | ID ',' f=form { $val = new Form($ID.text, $f.val); }
+    ;
+
+hlambda returns [AstHLambda val]
+    : '{' '|' form '|' stmnt_seq '}' { $val = new AstHLambda($form.val, $stmnt_seq.val); }
+    | '{' stmnt_seq '}' { $val = new AstHLambda($stmnt_seq.val); }
     ;
 
 hnative returns [AstHNative val]
@@ -49,7 +54,10 @@ hnative returns [AstHNative val]
     | INT { $val = new AstHInt($INT.text); }
     | TRUE { $val = new AstHBool(true); }
     | FALSE { $val = new AstHBool(false); }
+    | hlambda { $val = $hlambda.val; }
     ;
+
+WS : [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
 
 INT: [0-9]+;
 NIL: 'nil';
@@ -57,5 +65,3 @@ TRUE: 'true';
 FALSE: 'false';
 VAR: 'var';
 ID: [a-zA-Z][a-zA-Z0-9]*;
-
-WS : [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
