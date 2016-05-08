@@ -5,38 +5,33 @@ grammar Homer;
     import org.homer.ast.*;
 }
 
-program returns [StmntSeq val]
-    : stmnt_seq { $val = $stmnt_seq.val; }
+program returns [Ast ast]
+    : stmnt_seq { $ast = $stmnt_seq.ast; }
     ;
 
-stmnt_seq returns [StmntSeq val]
-    : stmnt { $val = new StmntSeqLast($stmnt.val); }
-    | stmnt seq=stmnt_seq { $val = new StmntSeqPair($stmnt.val, $seq.val); }
+stmnt_seq returns [Ast ast]
+    : stmnt { $ast = $stmnt.ast; }
+    | stmnt seq=stmnt_seq { $ast = new StmntSeqPair($stmnt.ast, $seq.ast); }
     ;
 
-stmnt returns [Stmnt val]
-    : decl ';' { $val = new StmntDecl($decl.val); }
-    | expr ';' { $val = new StmntExpr($expr.val); }
-    | ';' { $val = new StmnHNil(); }
+stmnt returns [Ast ast]
+    : decl ';' { $ast = $decl.ast; }
+    | expr ';' { $ast = $expr.ast; }
+    | ';' { $ast = new AstHNil(); }
     ;
 
-expr returns [Expr val]
-    : hnative { $val = new ExprHNative($hnative.val); }
-    | lval { $val = new ExprLval($lval.val); }
+expr returns [Ast ast]
+    : hnative { $ast = $hnative.ast; }
+    | ID { $ast = new AstID($ID.text); }
     ;
 
-lval returns [Lval val]
-    : ID { $val = new LvalID($ID.text); }
-    | ID '=' expr { $val = new LvalEq($ID.text, $expr.val); }
-    ;
-
-decl returns [Decl val]
-    : VAR ID '=' expr { $val = new Decl($ID.text, $expr.val); }
+decl returns [Ast ast]
+    : VAL ID '=' expr { $ast = new Decl($ID.text, $expr.ast); }
     ;
 
 params returns [Params val]
-    : expr { $val = new Params($expr.val); }
-    | expr ',' p=params { $val = new Params($expr.val, $p.val); }
+    : expr { $val = new Params($expr.ast); }
+    | expr ',' p=params { $val = new Params($expr.ast, $p.val); }
     ;
 
 form returns [Form val]
@@ -44,17 +39,17 @@ form returns [Form val]
     | ID ',' f=form { $val = new Form($ID.text, $f.val); }
     ;
 
-hlambda returns [AstHLambda val]
-    : '{' '|' form '|' stmnt_seq '}' { $val = new AstHLambda($form.val, $stmnt_seq.val); }
-    | '{' stmnt_seq '}' { $val = new AstHLambda($stmnt_seq.val); }
+hlambda returns [Ast ast]
+    : '{' '|' form '|' stmnt_seq '}' { $ast = new AstHLambda($form.val, $stmnt_seq.ast); }
+    | '{' stmnt_seq '}' { $ast = new AstHLambda($stmnt_seq.ast); }
     ;
 
-hnative returns [AstHNative val]
-    : NIL { $val = new AstHNil(); }
-    | INT { $val = new AstHInt($INT.text); }
-    | TRUE { $val = new AstHBool(true); }
-    | FALSE { $val = new AstHBool(false); }
-    | hlambda { $val = $hlambda.val; }
+hnative returns [Ast ast]
+    : NIL { $ast = new AstHNil(); }
+    | INT { $ast = new AstHInt($INT.text); }
+    | TRUE { $ast = new AstHBool(true); }
+    | FALSE { $ast = new AstHBool(false); }
+    | hlambda { $ast = $hlambda.ast; }
     ;
 
 WS : [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
@@ -63,5 +58,5 @@ INT: [0-9]+;
 NIL: 'nil';
 TRUE: 'true';
 FALSE: 'false';
-VAR: 'var';
+VAL: 'val';
 ID: [a-zA-Z][a-zA-Z0-9]*;

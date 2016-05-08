@@ -2,17 +2,16 @@
 package org.homer;
 
 import org.homer.ast.Form;
-import org.homer.ast.StmntSeq;
 
 public class HLambda extends HNative {
     StackFrame frame;
     Form form;
-    StmntSeq seq;
+    Ast stmntSeq;
 
-    public HLambda(StackFrame frame, Form form, StmntSeq seq) {
+    public HLambda(StackFrame frame, Form form, Ast stmntSeq) {
         this.frame = frame;
         this.form = form;
-        this.seq = seq;
+        this.stmntSeq = stmntSeq;
     }
 
     public HNative call() {

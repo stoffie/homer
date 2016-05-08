@@ -7,9 +7,9 @@ import org.homer.StackFrame;
 
 public class Decl extends Ast {
     String id;
-    Expr e;
+    Ast e;
 
-    public Decl(String id, Expr e) {
+    public Decl(String id, Ast e) {
         this.id = id;
         this.e = e;
     }

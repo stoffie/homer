@@ -1,13 +1,14 @@
 
 package org.homer.ast;
 
+import org.homer.Ast;
 import org.homer.HNative;
 import org.homer.StackFrame;
 
-public class ExprCall extends Expr {
-    Expr expr;
+public class AstCall extends Ast {
+    Ast expr;
 
-    public ExprCall(Expr expr) {
+    public AstCall(Ast expr) {
         this.expr = expr;
     }
 

@@ -1,18 +1,19 @@
 package org.homer.ast;
 
+import org.homer.Ast;
 import org.homer.HLambda;
 import org.homer.HNative;
 import org.homer.StackFrame;
 
 public class AstHLambda extends AstHNative {
     Form form;
-    StmntSeq seq;
+    Ast seq;
 
-    public AstHLambda(StmntSeq seq) {
+    public AstHLambda(Ast seq) {
         this.seq = seq;
     }
 
-    public AstHLambda(Form form, StmntSeq seq) {
+    public AstHLambda(Form form, Ast seq) {
         this.form = form;
         this.seq = seq;
     }

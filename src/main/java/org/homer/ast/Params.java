@@ -1,15 +1,17 @@
 
 package org.homer.ast;
 
+import org.homer.Ast;
+
 public class Params {
-    Expr expr;
+    Ast expr;
     Params next;
 
-    public Params(Expr expr) {
+    public Params(Ast expr) {
         this.expr = expr;
     }
 
-    public Params(Expr expr, Params next) {
+    public Params(Ast expr, Params next) {
         this.expr = expr;
         this.next = next;
     }

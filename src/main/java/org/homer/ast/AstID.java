@@ -1,13 +1,14 @@
 
 package org.homer.ast;
 
+import org.homer.Ast;
 import org.homer.HNative;
 import org.homer.StackFrame;
 
-public class LvalID extends Lval {
+public class AstID extends Ast {
     String id;
 
-    public LvalID(String id) {
+    public AstID(String id) {
         this.id = id;
     }
 
