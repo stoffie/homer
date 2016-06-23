@@ -5,6 +5,7 @@ grammar Homer;
     import org.homer.ast.*;
 }
 
+/*
 program returns [Ast ast]
     : stmnt_seq { $ast = $stmnt_seq.ast; }
     ;
@@ -51,6 +52,20 @@ hnative returns [Ast ast]
     | FALSE { $ast = new AstHBool(false); }
     | hlambda { $ast = $hlambda.ast; }
     ;
+*/
+
+
+body returns [Evaluable ast]
+    : lval=body ';' rval=value { $ast = Evaluable.bodyAst($lval.ast, $rval.ast); }
+    | value { $ast = $value.ast; }
+    ;
+    
+value returns [Evaluable ast]
+    : TRUE { $ast = Evaluable.trueAst; }
+    | FALSE { $ast = Evaluable.falseAst; }
+    | INT { $ast = Evaluable.intAst($INT.text); }
+    //| ID { $ast = Evaluable.idAst($ID.text); }
+    ;
 
 WS : [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
 
@@ -58,5 +73,5 @@ INT: [0-9]+;
 NIL: 'nil';
 TRUE: 'true';
 FALSE: 'false';
-VAL: 'val';
+LET: 'let';
 ID: [a-zA-Z][a-zA-Z0-9]*;

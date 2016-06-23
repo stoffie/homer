@@ -4,6 +4,7 @@ package org.homer;
 import java.util.HashMap;
 
 public class StackFrame {
+    // this is some old crap
     StackFrame parent;
     HashMap<String, Pointer> map;
 
